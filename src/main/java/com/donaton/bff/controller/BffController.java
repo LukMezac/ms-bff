@@ -7,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("/api")
 @CrossOrigin("*")
 public class BffController {
-
+    // integración BFF funcionando correctamente
     private final RestTemplate restTemplate = new RestTemplate();
 
     // 🔹 DONACIONES
