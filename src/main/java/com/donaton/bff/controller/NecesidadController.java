@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
 @RestController
 @RequestMapping("/necesidades")
 @CrossOrigin("*")
@@ -13,7 +12,6 @@ public class NecesidadController {
     @Autowired
     private RestTemplate restTemplate;
 
-    // ⚠️ AJUSTA ESTE PUERTO SEGÚN TU MS
     private final String URL = "http://localhost:8080/necesidades";
 
     @GetMapping
@@ -22,7 +20,19 @@ public class NecesidadController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody Object necesidad) {
-        return restTemplate.postForEntity(URL, necesidad, Object.class);
+    public ResponseEntity<?> crear(@RequestBody Object n) {
+        return restTemplate.postForEntity(URL, n, Object.class);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody Object n) {
+        restTemplate.put(URL + "/" + id, n);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminar(@PathVariable Long id) {
+        restTemplate.delete(URL + "/" + id);
+        return ResponseEntity.ok().build();
     }
 }

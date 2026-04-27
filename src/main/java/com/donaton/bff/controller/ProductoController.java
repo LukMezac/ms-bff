@@ -20,8 +20,25 @@ public class ProductoController {
         return restTemplate.getForEntity(URL, Object.class);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtener(@PathVariable Long id) {
+        return restTemplate.getForEntity(URL + "/" + id, Object.class);
+    }
+
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody Object producto) {
         return restTemplate.postForEntity(URL, producto, Object.class);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody Object producto) {
+        restTemplate.put(URL + "/" + id, producto);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminar(@PathVariable Long id) {
+        restTemplate.delete(URL + "/" + id);
+        return ResponseEntity.ok().build();
     }
 }
