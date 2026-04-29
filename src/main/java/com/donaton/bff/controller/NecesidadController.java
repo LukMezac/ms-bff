@@ -1,9 +1,10 @@
 package com.donaton.bff.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+
 @RestController
 @RequestMapping("/necesidades")
 @CrossOrigin("*")
@@ -26,8 +27,18 @@ public class NecesidadController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody Object n) {
-        restTemplate.put(URL + "/" + id, n);
-        return ResponseEntity.ok().build();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Object> request = new HttpEntity<>(n, headers);
+
+        return restTemplate.exchange(
+                URL + "/" + id,
+                HttpMethod.PUT,
+                request,
+                Object.class
+        );
     }
 
     @DeleteMapping("/{id}")
