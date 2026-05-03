@@ -32,11 +32,11 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authz -> authz
 
-                        // 🔓 AUTH (LOGIN / REGISTER)
+                        // AUTH (LOGIN / REGISTER)
                         .requestMatchers("/auth/**").permitAll()
 
                         // =========================
-                        // 📦 PRODUCTOS (DONACIONES)
+                        // PRODUCTOS (DONACIONES)
                         // =========================
                         .requestMatchers(HttpMethod.GET, "/productos/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/productos/**").hasAnyRole("ADMIN", "USER")
@@ -44,7 +44,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/productos/**").hasRole("ADMIN")
 
                         // =========================
-                        // 🚚 LOGÍSTICA (ENVÍOS)
+                        // LOGÍSTICA (ENVÍOS)
                         // =========================
                         .requestMatchers(HttpMethod.GET, "/envios/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/envios/**").hasAnyRole("ADMIN", "USER")
@@ -52,24 +52,24 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/envios/**").hasRole("ADMIN")
 
                         // =========================
-                        // 🚨 NECESIDADES (ESTO TE FALTABA)
+                        // NECESIDADES
                         // =========================
                         .requestMatchers(HttpMethod.GET, "/necesidades/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/necesidades/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers(HttpMethod.PUT, "/necesidades/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/necesidades/**").hasRole("ADMIN")
 
-                        // 🔒 TODO LO DEMÁS REQUIERE LOGIN
+                        // lo demás requiere login
                         .anyRequest().authenticated()
                 )
 
-                // 🔥 JWT FILTER
+                // JWT FILTER
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    // 🌐 CONFIGURACIÓN CORS
+    // CONFIGURACIÓN CORS
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();

@@ -33,25 +33,25 @@ public class JwtFilter implements Filter {
         String uri = req.getRequestURI();
         String method = req.getMethod();
 
-        // 🔥 CORS
+        //  CORS
         if (method.equals("OPTIONS")) {
             chain.doFilter(request, response);
             return;
         }
 
-        // 🔓 LOGIN LIBRE
+        // LOGIN LIBRE
         if (uri.contains("/auth")) {
             chain.doFilter(request, response);
             return;
         }
 
-        // 🔓 GET público
+        // GET público
         if (method.equals("GET")) {
             chain.doFilter(request, response);
             return;
         }
 
-        // 🔒 TODO LO DEMÁS requiere token
+        // Todos los demás requieren token
 
         String authHeader = req.getHeader("Authorization");
 
@@ -78,7 +78,7 @@ public class JwtFilter implements Filter {
 
             SecurityContextHolder.getContext().setAuthentication(auth);
 
-            // 🔒 SOLO ADMIN para PUT y DELETE
+            // SOLO ADMIN para PUT y DELETE
             if (method.equals("PUT") || method.equals("DELETE")) {
                 boolean esAdmin = authorities.stream()
                         .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));

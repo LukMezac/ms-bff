@@ -21,32 +21,32 @@ public class ProductoController {
 
     private final String URL = "http://localhost:8081/donaciones";
 
-    // ✅ LISTAR - Todos pueden ver (sin token)
+    // LISTAR - Todos pueden ver (sin token)
     @GetMapping
     public ResponseEntity<?> listar() {
         return restTemplate.getForEntity(URL, Object.class);
     }
 
-    // ✅ OBTENER POR ID - Todos pueden ver (sin token)
+    // OBTENER POR ID - Todos pueden ver (sin token)
     @GetMapping("/{id}")
     public ResponseEntity<?> obtener(@PathVariable Long id) {
         return restTemplate.getForEntity(URL + "/" + id, Object.class);
     }
 
-    // ✅ CREAR - Todos logueados pueden crear (token válido)
+    // CREAR - Todos logueados pueden crear (token válido)
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody Object producto) {
         // El JwtFilter ya validó que hay token
         return restTemplate.postForEntity(URL, producto, Object.class);
     }
 
-    // 🔒 ACTUALIZAR - Solo ADMIN
+    // ACTUALIZAR - Solo ADMIN
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(
             @PathVariable Long id,
             @RequestBody Object producto) {
 
-        // Validar que sea ADMIN
+
         if (!esAdmin()) {
             return ResponseEntity.status(403).body("🔒 Solo admins pueden editar");
         }
@@ -55,11 +55,11 @@ public class ProductoController {
         return ResponseEntity.ok("✅ Producto actualizado");
     }
 
-    // 🔒 ELIMINAR - Solo ADMIN
+    //  ELIMINAR - Solo ADMIN
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
 
-        // Validar que sea ADMIN
+
         if (!esAdmin()) {
             return ResponseEntity.status(403).body("🔒 Solo admins pueden eliminar");
         }
@@ -68,7 +68,7 @@ public class ProductoController {
         return ResponseEntity.ok("✅ Producto eliminado");
     }
 
-    // 🛡️ MÉTODO AUXILIAR: Verificar si es admin
+    // Verificar si es admin
     private boolean esAdmin() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null) return false;

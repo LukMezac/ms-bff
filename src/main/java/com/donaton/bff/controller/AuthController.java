@@ -21,7 +21,7 @@ public class AuthController {
     }
 
     // =========================
-    // 📦 DTO LOGIN
+    //  DTO LOGIN
     // =========================
     public static class LoginRequest {
         private String username;
@@ -35,7 +35,7 @@ public class AuthController {
     }
 
     // =========================
-    // 📦 DTO REGISTRO
+    // DTO REGISTRO
     // =========================
     public static class RegistroRequest {
         private String usuario;
@@ -59,11 +59,11 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
 
-            // 🔎 Buscar usuario por email
+            //  Buscar usuario por email
             String sql = "SELECT nombre, rol, password FROM usuarios WHERE email = ?";
             List<Map<String, Object>> resultados = jdbcTemplate.queryForList(sql, request.getUsername());
 
-            // ❌ Usuario no existe
+            //  Usuario no existe
             if (resultados.isEmpty()) {
                 return ResponseEntity.status(401).body(Map.of("error", "Usuario no encontrado"));
             }
@@ -72,22 +72,22 @@ public class AuthController {
 
             String dbPassword = (String) usuario.get("password");
 
-            // ❌ Password incorrecta
+            // Password incorrecta
             if (!dbPassword.equals(request.getPassword())) {
                 return ResponseEntity.status(401).body(Map.of("error", "Clave incorrecta"));
             }
 
-            // 🔥 Obtener rol y formatearlo
+            // Obtener rol y formatearlo
             String rolDb = (String) usuario.get("rol");
             String rolFinal = (rolDb != null) ? rolDb.trim().toUpperCase() : "USER";
 
-            // 🔐 IMPORTANTE: ROLE_*
+            // IMPORTANTE: ROLE_*
             List<String> roles = List.of("ROLE_" + rolFinal);
 
-            // 🔑 Generar token
+            // Generar token
             String token = jwtService.generarToken(request.getUsername(), roles);
 
-            // ✅ Respuesta completa
+            // Respuesta completa
             return ResponseEntity.ok(Map.of(
                     "token", token,
                     "rol", rolFinal,
@@ -100,13 +100,13 @@ public class AuthController {
     }
 
     // =========================
-    // 🧾 REGISTRO
+    // REGISTRO
     // =========================
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegistroRequest request) {
         try {
 
-            // 🔎 Verificar si existe
+            // Verificar si existe
             String checkSql = "SELECT COUNT(*) FROM usuarios WHERE email = ?";
             Integer count = jdbcTemplate.queryForObject(checkSql, Integer.class, request.getEmail());
 
@@ -114,7 +114,7 @@ public class AuthController {
                 return ResponseEntity.status(400).body(Map.of("error", "El email ya está registrado"));
             }
 
-            // 📝 Insertar usuario
+            // Insertar usuario
             String insertSql = "INSERT INTO usuarios (nombre, email, password, rol) VALUES (?, ?, ?, 'USER')";
             jdbcTemplate.update(insertSql,
                     request.getUsuario(),

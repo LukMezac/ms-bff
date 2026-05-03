@@ -17,12 +17,12 @@ public class JwtService {
             "donaton-super-secret-key-1234567890".getBytes()
     );
 
-    // 🔍 Obtener usuario
+    // Obtener usuario
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
-    // 🔐 Obtener roles (seguro)
+    // Obtener roles (seguro)
     public List<String> extractRoles(String token) {
         Claims claims = extractAllClaims(token);
         Object roles = claims.get("roles");
@@ -36,7 +36,7 @@ public class JwtService {
         return List.of();
     }
 
-    // 🔥 Generar token con roles
+    // Generar token con roles
     public String generarToken(String usuario, List<String> roles) {
         return Jwts.builder()
                 .setSubject(usuario)
@@ -47,13 +47,13 @@ public class JwtService {
                 .compact();
     }
 
-    // 🔍 Obtener claims
+    // Obtener claims
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    // 🔐 Parsear token
+    // Parsear token
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -62,7 +62,7 @@ public class JwtService {
                 .getBody();
     }
 
-    // ⏱️ Validar expiración (opcional pero PRO)
+    //  Validar expiración
     public boolean isTokenExpired(String token) {
         Date expiration = extractClaim(token, Claims::getExpiration);
         return expiration.before(new Date());

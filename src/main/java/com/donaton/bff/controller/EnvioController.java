@@ -13,7 +13,7 @@ public class EnvioController {
     @Autowired
     private RestTemplate restTemplate;
 
-    // 🔥 Puerto de tu microservicio logistica
+    // Puerto de tu microservicio logistica
     private final String URL = "http://localhost:8082/envios";
 
     @GetMapping
